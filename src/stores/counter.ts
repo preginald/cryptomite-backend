@@ -1,4 +1,4 @@
-import { computed, reactive } from 'vue'
+import { reactive } from 'vue'
 
 const state = reactive({
     price: 2.50,
@@ -10,10 +10,6 @@ const state = reactive({
     qty: 300,
 })
 
-const getters = reactive({
-    times2: computed(() => state.count * 2)
-})
-
 const actions = {
     inc() {
         state.cost = state.price * state.qty
@@ -22,4 +18,4 @@ const actions = {
     }
 }
 
-export default { state, getters, ...actions }
+export default { state, ...actions }
