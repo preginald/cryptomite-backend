@@ -13,3 +13,10 @@ v3. Send alert when limit triggered
 v4. Exit farm when limit triggered
 
 v5. Exit farm and liquidate tokens when limit triggered
+
+## Stack
+
+Originally this project started using the VueJs framework but I've opted to use Python.
+
+* Python
+* Flask
