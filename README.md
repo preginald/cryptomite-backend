@@ -2,6 +2,8 @@
 
 Cryptomite is a set of tools and trackers to get the most out of your staking yields.
 
+First major feature will be a limit trigger to exit an LP farm and liquidate the native tokens.
+
 ## Roadmap
 
 v1. Collection of static calculators
