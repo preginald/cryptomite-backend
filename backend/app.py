@@ -3,12 +3,13 @@ from flask import Flask, render_template, request
 # Declare the app
 app = Flask(__name__)
 
+
 # Start an app route at '/'
 @app.route('/')
-
 # Declare the main function
 def main():
     return render_template('app.html')
+
 
 # Form submission route
 @app.route('/send', methods=['POST'])
