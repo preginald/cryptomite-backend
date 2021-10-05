@@ -1,5 +1,4 @@
 # Cryptomite
-
 Cryptomite is a set of tools and trackers to get the most out of your staking yields.
 
 First major feature will be a limit trigger to exit an LP farm and liquidate the native tokens.
@@ -7,8 +6,9 @@ First major feature will be a limit trigger to exit an LP farm and liquidate the
 ## Stack
 
 Originally this project started using the VueJs framework.
+Go to https://github.com/preginald/cryptomite-frontend for the frontend project
 
-This repo tracks the API.
+This repo tracks the backend API.
 
 * Python
 * Flask
