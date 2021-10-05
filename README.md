@@ -6,7 +6,7 @@ First major feature will be a limit trigger to exit an LP farm and liquidate the
 ## Stack
 
 Originally this project started using the VueJs framework.
-Go to https://github.com/preginald/cryptomite-frontend for the frontend project
+Go to https://github.com/preginald/cryptomite-frontend for the frontend project.
 
 This repo tracks the backend API.
 
