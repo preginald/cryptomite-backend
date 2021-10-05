@@ -72,13 +72,18 @@ def calculate_lp():
         token_a_price = float(data['tokenAPrice'])
         token_b_price = float(data['tokenBPrice'])
         principle = float(data['principle'])
+        yield_farm = data['yieldFarm']
         status = 'success'
         token_a_qty = 0
         token_b_qty = 0
 
-        if principle > 0 and token_a_price > 0 and token_b_price > 0:
-            token_a_qty = (principle / 2) / token_a_price
-            token_b_qty = (principle / 2) / token_b_price
+        if yield_farm:
+            if principle > 0 and token_a_price > 0 and token_b_price > 0:
+                token_a_qty = (principle / 2) / token_a_price
+                token_b_qty = (principle / 2) / token_b_price
+        else:
+            if principle > 0 and token_a_price > 0:
+                token_a_qty = principle / token_a_price
 
         return jsonify({'tokenAQty': token_a_qty, 'tokenBQty': token_b_qty, 'status': status})
 
@@ -90,15 +95,59 @@ def calculate_yield():
 
         # Start pulling data from form input
         apr = float(data['apr'])
+        token_a_price = float(data['tokenAPrice'])
         principle = float(data['principle'])
         status = 'success'
 
         if apr > 0 and principle > 0:
-            total_yield = principle * (apr/100)
-            daily_yield = total_yield / 365
-            hourly_yield = daily_yield / 24
+            total_yield_value = principle * (apr/100)
+            daily_yield_value = total_yield_value / 365
+            hourly_yield_value = daily_yield_value / 24
+            total_yield = total_yield_value / token_a_price
+            daily_yield = daily_yield_value / token_a_price
+            hourly_yield = hourly_yield_value / token_a_price
 
-        return jsonify({'totalYield': total_yield, 'dailyYield': daily_yield, 'hourlyYield': hourly_yield, 'status': status})
+        return jsonify({
+            'totalYield': total_yield,
+            'dailyYield': daily_yield,
+            'hourlyYield': hourly_yield,
+            'totalYieldValue': total_yield_value,
+            'dailyYieldValue': daily_yield_value,
+            'hourlyYieldValue': hourly_yield_value,
+            'status': status
+        })
+
+
+@app.route('/calculatePrinciple', methods=['POST'])
+def calculate_principle():
+    if request.method == 'POST':
+        data = request.get_json()
+
+        # Start pulling data from form input
+        apr = float(data['apr'])
+        daily_yield_value = float(data['dailyYieldValue'])
+        token_a_price = float(data['tokenAPrice'])
+        status = 'success'
+
+        if apr > 0 and daily_yield_value > 0:
+            total_yield_value = daily_yield_value * 365
+            daily_yield_value = total_yield_value / 365
+            hourly_yield_value = daily_yield_value / 24
+            total_yield = total_yield_value / token_a_price
+            daily_yield = daily_yield_value / token_a_price
+            hourly_yield = hourly_yield_value / token_a_price
+            principle = total_yield_value / (apr/100)
+
+        return jsonify({
+            'totalYield': total_yield,
+            'dailyYield': daily_yield,
+            'hourlyYield': hourly_yield,
+            'totalYieldValue': total_yield_value,
+            'dailyYieldValue': daily_yield_value,
+            'hourlyYieldValue': hourly_yield_value,
+            'principle': principle,
+            'status': status
+        })
 
 
 if __name__ == "__main__":
