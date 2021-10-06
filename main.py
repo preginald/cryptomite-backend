@@ -90,6 +90,13 @@ def calculate_lp():
 
 @app.route('/calculateYield', methods=['POST'])
 def calculate_yield():
+    total_yield = 0
+    daily_yield = 0
+    hourly_yield = 0
+    total_yield_value = 0
+    daily_yield_value = 0
+    hourly_yield_value = 0
+
     if request.method == 'POST':
         data = request.get_json()
 
@@ -120,6 +127,13 @@ def calculate_yield():
 
 @app.route('/calculatePrinciple', methods=['POST'])
 def calculate_principle():
+    total_yield = 0
+    daily_yield = 0
+    hourly_yield = 0
+    total_yield_value = 0
+    principle = 0
+    hourly_yield_value = 0
+
     if request.method == 'POST':
         data = request.get_json()
 
