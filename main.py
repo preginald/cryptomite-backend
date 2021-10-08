@@ -96,6 +96,8 @@ def calculate_yield():
     total_yield_value = 0
     daily_yield_value = 0
     hourly_yield_value = 0
+    n = 365
+    t = 1
 
     if request.method == 'POST':
         data = request.get_json()
@@ -107,8 +109,10 @@ def calculate_yield():
         status = 'success'
 
         if apr > 0 and principle > 0:
-            total_yield_value = principle * (apr/100)
-            daily_yield_value = total_yield_value / 365
+            # total_yield_value = principle * (apr/100)
+            total_yield_value = principle * (1 + ((apr / 100) / n)) ** (n * t)
+            # daily_yield_value = total_yield_value / 365
+            daily_yield_value = principle * ((apr / 100) / 365)
             hourly_yield_value = daily_yield_value / 24
             total_yield = total_yield_value / token_a_price
             daily_yield = daily_yield_value / token_a_price
@@ -150,7 +154,7 @@ def calculate_principle():
             total_yield = total_yield_value / token_a_price
             daily_yield = daily_yield_value / token_a_price
             hourly_yield = hourly_yield_value / token_a_price
-            principle = total_yield_value / (apr/100)
+            principle = total_yield_value / (apr / 100)
 
         return jsonify({
             'totalYield': total_yield,
