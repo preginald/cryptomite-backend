@@ -96,6 +96,8 @@ def calculate_yield():
     total_yield_value = 0
     daily_yield_value = 0
     hourly_yield_value = 0
+    breakeven_hours = 0
+    breakeven_days = 0
     n = 365
     t = 1
 
@@ -117,6 +119,8 @@ def calculate_yield():
             total_yield = total_yield_value / token_a_price
             daily_yield = daily_yield_value / token_a_price
             hourly_yield = hourly_yield_value / token_a_price
+            breakeven_hours = principle / hourly_yield_value
+            breakeven_days = breakeven_hours / 24
 
         return jsonify({
             'totalYield': total_yield,
@@ -125,6 +129,8 @@ def calculate_yield():
             'totalYieldValue': total_yield_value,
             'dailyYieldValue': daily_yield_value,
             'hourlyYieldValue': hourly_yield_value,
+            'breakevenHours': breakeven_hours,
+            'breakevenDays': breakeven_days,
             'status': status
         })
 
