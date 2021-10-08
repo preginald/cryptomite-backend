@@ -24,3 +24,12 @@ v3. Send alert when limit triggered
 v4. Exit farm when limit triggered
 
 v5. Exit farm and liquidate tokens when limit triggered
+
+## Dev environment
+
+### Windows
+
+1. virtualenv --python python venv
+2. .\venv\Scripts\activate
+3. pip install -r .\requirements.txt
+4. python main.py
