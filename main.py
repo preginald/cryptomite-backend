@@ -48,19 +48,34 @@ def simple_calc():
             return jsonify({'sum': 0, 'status': 'error'})
 
 
-@app.route('/yield-farm-breakeven', methods=['POST'])
-def yield_farm_breakeven():
+@app.route('/calculateDepositFee', methods=['POST'])
+def calculate_deposit_fee():
+    deposit_fee_value = 0
+    deposit_fee_qty = 0
+
     if request.method == 'POST':
         data = request.get_json()
-        # print(data['num1'])
 
         # Start pulling data from form input
-        apr = data['apr']
-        decay = data['decay']
-
+        deposit_fee = float(data['depositFee'])
+        principle = float(data['principle'])
+        token_a_price = float(data['tokenAPrice'])
         status = 'success'
-        result = float(apr) * float(decay)
-        return jsonify({'sum': result, 'status': status})
+
+        if deposit_fee > 0 and principle > 0:
+            deposit_fee_value = principle * (deposit_fee / 100)
+
+        if deposit_fee > 0 and principle > 0 and token_a_price > 0:
+            deposit_fee_qty = deposit_fee_value / token_a_price
+
+        return jsonify({
+            'depositFee': deposit_fee,
+            'principle': principle,
+            'tokenAPrice': token_a_price,
+            'depositFeeValue': deposit_fee_value,
+            'depositFeeQty': deposit_fee_qty,
+            'status': status
+        })
 
 
 @app.route('/calculateLP', methods=['POST'])
@@ -96,6 +111,10 @@ def calculate_yield():
     total_yield_value = 0
     daily_yield_value = 0
     hourly_yield_value = 0
+    principle_breakeven_hours = 0
+    principle_breakeven_days = 0
+    fee_breakeven_hours = 0
+    fee_breakeven_days = 0
     n = 365
     t = 1
 
@@ -106,6 +125,7 @@ def calculate_yield():
         apr = float(data['apr'])
         token_a_price = float(data['tokenAPrice'])
         principle = float(data['principle'])
+        deposit_fee_value = float(data['depositFeeValue'])
         status = 'success'
 
         if apr > 0 and principle > 0:
@@ -117,6 +137,13 @@ def calculate_yield():
             total_yield = total_yield_value / token_a_price
             daily_yield = daily_yield_value / token_a_price
             hourly_yield = hourly_yield_value / token_a_price
+            principle_breakeven_hours = principle / hourly_yield_value
+            principle_breakeven_days = principle_breakeven_hours / 24
+
+        if deposit_fee_value > 0:
+            fee_breakeven_hours = deposit_fee_value / hourly_yield_value
+            fee_breakeven_days = fee_breakeven_hours / 24
+            print(fee_breakeven_hours)
 
         return jsonify({
             'totalYield': total_yield,
@@ -125,6 +152,10 @@ def calculate_yield():
             'totalYieldValue': total_yield_value,
             'dailyYieldValue': daily_yield_value,
             'hourlyYieldValue': hourly_yield_value,
+            'principleBreakevenHours': principle_breakeven_hours,
+            'principleBreakevenDays': principle_breakeven_days,
+            'feeBreakevenHours': fee_breakeven_hours,
+            'feeBreakevenDays': fee_breakeven_days,
             'status': status
         })
 
