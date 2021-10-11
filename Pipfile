@@ -4,8 +4,10 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-flask = "*"
-flask-cors = "*"
+web3 = "==5.24.0"
+python-dotenv = "==0.19.1"
+Flask = "==2.0.1"
+Flask-Cors = "==3.0.10"
 
 [dev-packages]
 
