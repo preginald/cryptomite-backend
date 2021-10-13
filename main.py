@@ -1,5 +1,7 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+import calculators
+from test import testing
 
 app = Flask(__name__)
 
@@ -19,39 +21,15 @@ def greetings():
 
 @app.route('/simple-calculator', methods=['POST'])
 def simple_calc():
-    if request.method == 'POST':
-        data = request.get_json()
-        # print(data['num1'])
-
-        # Start pulling data from form input
-        num1 = data['num1']
-        num2 = data['num2']
-        operation = data['operation']
-
-        status = 'success'
-
-        # Calculate if statements
-
-        if operation == 'add':
-            result = float(num1) + float(num2)
-            return jsonify({'sum': result, 'status': status})
-        elif operation == 'subtract':
-            result = float(num1) - float(num2)
-            return jsonify({'sum': result, 'status': status})
-        elif operation == 'multiply':
-            result = float(num1) * float(num2)
-            return jsonify({'sum': result, 'status': status})
-        elif operation == 'divide':
-            result = float(num1) / float(num2)
-            return jsonify({'sum': result, 'status': status})
-        else:
-            return jsonify({'sum': 0, 'status': 'error'})
+    return calculators.simple_calc()
 
 
 @app.route('/calculateDepositFee', methods=['POST'])
 def calculate_deposit_fee():
     deposit_fee_value = 0
     deposit_fee_qty = 0
+    principle_after_fee = 0
+    token_a_qty_after_fee = 0
 
     if request.method == 'POST':
         data = request.get_json()
@@ -60,13 +38,16 @@ def calculate_deposit_fee():
         deposit_fee = float(data['depositFee'])
         principle = float(data['principle'])
         token_a_price = float(data['tokenAPrice'])
+        token_a_qty = float(data['tokenAQty'])
         status = 'success'
 
         if deposit_fee > 0 and principle > 0:
             deposit_fee_value = principle * (deposit_fee / 100)
+            principle_after_fee = principle - deposit_fee_value
 
         if deposit_fee > 0 and principle > 0 and token_a_price > 0:
             deposit_fee_qty = deposit_fee_value / token_a_price
+            token_a_qty_after_fee = token_a_qty - deposit_fee_qty
 
         return jsonify({
             'depositFee': deposit_fee,
@@ -74,6 +55,8 @@ def calculate_deposit_fee():
             'tokenAPrice': token_a_price,
             'depositFeeValue': deposit_fee_value,
             'depositFeeQty': deposit_fee_qty,
+            'principleAfterFee': principle_after_fee,
+            'tokenAQtyAfterFee': token_a_qty_after_fee,
             'status': status
         })
 
@@ -197,6 +180,11 @@ def calculate_principle():
             'principle': principle,
             'status': status
         })
+
+
+@app.route('/test', methods=['POST'])
+def test():
+    return testing()
 
 
 if __name__ == "__main__":
