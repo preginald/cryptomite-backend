@@ -27,6 +27,13 @@ v5. Exit farm and liquidate tokens when limit triggered
 
 ## Dev environment
 
+### Linux
+
+1. virtualenv --python python venv
+2. source venv/bin/activate
+3. pip install -r .\requirements.txt
+4. python main.py
+
 ### Windows
 
 1. virtualenv --python python venv
