@@ -1,2 +1,5 @@
 .env
 /venv/
+__pychache__
+__pycache__/calculators.cpython-39.pyc
+__pycache__/test.cpython-39.pyc
