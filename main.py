@@ -1,7 +1,8 @@
+import csv
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 import calculators
-from test import testing
+from test import testing, csvToJson
 
 app = Flask(__name__)
 
@@ -185,6 +186,13 @@ def calculate_principle():
 @app.route('/test', methods=['POST'])
 def test():
     return testing()
+
+
+@app.route('/csvToJson', methods=['POST'])
+def convertMe():
+    json_string = csvToJson()
+    # print(type(jsonify(json_string)))
+    return json_string
 
 
 if __name__ == "__main__":
