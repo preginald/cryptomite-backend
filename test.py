@@ -1,4 +1,6 @@
 import os
+import csv
+import json
 from flask import jsonify, request
 from dotenv import load_dotenv
 from web3 import Web3
@@ -36,3 +38,28 @@ def testing():
             'balance_decimal': str(balance_decimal),
             'status': status
         })
+
+
+def csvToJson():
+    data = request.get_json()
+    json_string = {}
+    csv_file_path = data['csvFilePath']
+
+    if data['csvFilePath']:
+        json_array = []
+
+        # Read the CSV
+        data = {}
+        with open(csv_file_path) as csv_file:
+            # load csv file data using csv library's dictionary reader
+            csv_reader = csv.DictReader(csv_file)
+
+            # convert each csv row into python dict
+            for csvRow in csv_reader:
+                csvRow['TxhashLink'] = "https://polygonscan.com/tx/" + \
+                    csvRow['Txhash']
+                json_array.append(csvRow)
+
+            json_string = json.dumps(json_array, indent=4)
+
+    return json_string
