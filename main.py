@@ -1,16 +1,11 @@
-import csv
+from test import testing, csvToJson
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 import calculators
-from test import testing, csvToJson
 
 app = Flask(__name__)
 
 app.config.from_object(__name__)
-
-# CORS(app, resources={r"/*": {'origins': "*"}})
-# CORS(app,
-#      resources={r"/*": {'origins': 'http://localhost:3000', "allow_headers": "Access-Control-Allow-Origin"}})
 
 CORS(app)
 
