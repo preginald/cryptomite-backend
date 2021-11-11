@@ -43,6 +43,28 @@ def testing():
         )
 
 
+def getTokenPrice(pair_address, token):
+    with open("abis.txt") as file:
+        data = file.read()
+        abis = json.loads(data)
+        reserves = {}
+
+        for item in abis:
+            if item["contract"] == pair_address:
+                abi = item["abi"]
+                contract = w3.eth.contract(address=pair_address, abi=abi)
+                reserves_data = contract.functions.getReserves().call()
+                token0_address = contract.functions.token0().call()
+                token1_address = contract.functions.token1().call()
+                if token1_address == token["contract"]:
+                    reserves_data[1] = reserves_data[1] / 10 ** token["decimals"]
+                reserves = [
+                    {"token0": token0_address, "reserve": reserves_data[0] / 1000000},
+                    {"token1": token1_address, "reserve": reserves_data[1]},
+                ]
+                return reserves
+
+
 def getToken():
     if request.method == "POST":
         abi = {}
@@ -54,9 +76,7 @@ def getToken():
         total_supply = 0
         balance = 0
 
-        address = data["tokenAddress"]
-        if not w3.isChecksumAddress(address):
-            address = w3.toChecksumAddress(address)
+        address = w3.toChecksumAddress(data["tokenAddress"])
 
         sender = data["senderAddress"]
         status = "success"
@@ -85,6 +105,10 @@ def getToken():
                     decimals = contract.functions.decimals().call()
                     total_supply = contract.functions.totalSupply().call()
                     balance = contract.functions.balanceOf(sender).call()
+                    reserves = getTokenPrice(
+                        "0x50409De292f5F821888702e9538Bf15Fa273dFE6",
+                        {"contract": address, "decimals": decimals},
+                    )
         else:
             print("Not connected")
 
@@ -95,6 +119,7 @@ def getToken():
                 "decimals": decimals,
                 "totalSupply": total_supply / (10 ** decimals),
                 "balance": balance / (10 ** decimals),
+                "reserves": reserves,
                 "status": status,
             }
         )
