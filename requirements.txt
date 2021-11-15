@@ -3,3 +3,4 @@ Flask-Cors==3.0.10
 web3==5.24.0
 python-dotenv==0.19.1
 black
+discord.py

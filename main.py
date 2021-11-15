@@ -1,13 +1,13 @@
 from test import testing, csvToJson, getToken
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-import calculators
+import calculators, auroxWebhook
 
 app = Flask(__name__)
 
 app.config.from_object(__name__)
 
-CORS(app)
+CORS(app, origins="http://localhost:3000")
 
 
 @app.route("/", methods=["GET"])
@@ -203,5 +203,10 @@ def convertMe():
     return json_string
 
 
+@app.route("/auroxWebhook", methods=["POST"])
+def auroxListening():
+    return auroxWebhook.main()
+
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, ssl_context="adhoc", debug=True)
