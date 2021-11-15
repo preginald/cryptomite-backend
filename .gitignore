@@ -1,6 +1,5 @@
 .env
-/venv/
-__pycache__/*
-__pycache__/calculators.cpython-39.pyc
-__pycache__/test.cpython-39.pyc
-.temp/
+/venv
+__pycache__
+.vscode
+.temp
