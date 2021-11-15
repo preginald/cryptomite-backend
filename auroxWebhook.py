@@ -26,11 +26,17 @@ def circle(signal):
 def discord_post(_alert):
     message = (
         circle(_alert["signal"])
+        + "**"
         + _alert["pair"]
+        + "**"
         + " triggered a "
+        + "**"
         + _alert["signal"]
+        + "**"
         + " on the "
+        + "**"
         + _alert["timeUnitDisplay"]
+        + "**"
     )
     # print(alert["pair"])
     print(message)
