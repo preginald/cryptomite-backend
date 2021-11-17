@@ -10,8 +10,9 @@ load_dotenv()
 def main():
     if request.method == "POST":
         data = request.get_json()
-        for alert in data:
-            discord_post(alert)
+        # for alert in data:
+        #     discord_post(alert)
+        discord_post(data)
     return "Got it"
 
 
@@ -36,7 +37,9 @@ def discord_post(_alert):
         + " on the "
         + "**"
         + _alert["timeUnitDisplay"]
-        + "**"
+        + "** *"
+        + _alert["exchangeDisplay"]
+        + "*"
     )
     # print(alert["pair"])
     print(message)
